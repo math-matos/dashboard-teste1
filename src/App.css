@@ -1,5 +1,24 @@
+:root {
+  --primary-color: #ff4d4d; /* Vermelho */
+  --secondary-color: #000; /* Preto */
+  --background-color: #fff; /* Branco */
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
 .App {
   text-align: center;
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--background-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .App-logo {
@@ -35,4 +54,69 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* src/App.css */
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.filter {
+  flex: 1;
+  margin: 0 10px;
+}
+
+select,
+.react-datepicker-wrapper {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.PlotlyGrid {
+  margin-top: 30px;
+  color: var(--secondary-color)
+}
+
+/* src/App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+select,
+.react-datepicker-wrapper {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+select {
+  color: #333;
+  background-color: #fff;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+  color: #333;
+  background-color: var(--background-color);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
 }

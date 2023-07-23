@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Plot from 'react-plotly.js';
+import './App.css';
 
 function App() {
   const [selectedMonth, setSelectedMonth] = useState(1);
@@ -18,19 +19,21 @@ function App() {
   }
 
   // Função para filtrar os dados com base nos filtros selecionados
-  const filteredData = data.filter(item => {
-    const itemMonth = item.Data.getMonth() + 1;
-    if (selectedMonth && itemMonth !== selectedMonth) {
-      return false;
-    }
-    if (selectedStartDate && item.Data < selectedStartDate) {
-      return false;
-    }
-    if (selectedEndDate && item.Data > selectedEndDate) {
-      return false;
-    }
-    return true;
-  });
+  const filteredData = useMemo(() => {
+    return data.filter(item => {
+      const itemMonth = item.Data.getMonth() + 1;
+      if (selectedMonth && itemMonth !== selectedMonth) {
+        return false;
+      }
+      if (selectedStartDate && item.Data < selectedStartDate) {
+        return false;
+      }
+      if (selectedEndDate && item.Data > selectedEndDate) {
+        return false;
+      }
+      return true;
+    });
+  }, [data, selectedMonth, selectedStartDate, selectedEndDate]);
 
   // Configuração do gráfico
   const plotData = [{
@@ -42,47 +45,61 @@ function App() {
     line: { shape: 'linear' },
   }];
 
+  // Key única com base nos filtros selecionados
+  const plotKey = JSON.stringify({ selectedMonth, selectedStartDate, selectedEndDate });
+
   return (
     <div className="App">
       <h1>Dashboard com Gráfico e Filtros</h1>
 
-      <Plot
-        data={plotData}
-        layout={{ title: 'Valores ao longo do tempo' }}
-        config={{ responsive: true }}
-      />
+      <div className="filters-container">
+        <div className="filter">
+          <label>Filtro por Mês:</label>
+          <select
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+          >
+            <option value={1}>Janeiro</option>
+            <option value={2}>Fevereiro</option>
+            <option value={3}>Março</option>
+            <option value={4}>Abril</option>
+            <option value={5}>Maio</option>
+            <option value={6}>Junho</option>
+            <option value={7}>Julho</option>
+          </select>
+        </div>
 
-      <label>Filtro por Mês:</label>
-      <select
-        value={selectedMonth}
-        onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-      >
-        <option value={1}>Janeiro</option>
-        <option value={2}>Fevereiro</option>
-        <option value={3}>Março</option>
-        <option value={4}>Abril</option>
-        <option value={5}>Maio</option>
-        <option value={6}>Junho</option>
-        <option value={7}>Julho</option>
-      </select>
+        <div className="filter">
+          <label>Filtro por Range de Data:</label>
+          <DatePicker
+            selected={selectedStartDate}
+            onChange={(date) => setSelectedStartDate(date)}
+            selectsStart
+            startDate={selectedStartDate}
+            endDate={selectedEndDate}
+            dateFormat="dd/MM/yyyy"
+            isClearable
+          />
+          <DatePicker
+            selected={selectedEndDate}
+            onChange={(date) => setSelectedEndDate(date)}
+            selectsEnd
+            startDate={selectedStartDate}
+            endDate={selectedEndDate}
+            dateFormat="dd/MM/yyyy"
+            isClearable
+          />
+        </div>
+      </div>
 
-      <label>Filtro por Range de Data:</label>
-      <DatePicker
-        selected={selectedStartDate}
-        onChange={(date) => setSelectedStartDate(date)}
-        selectsStart
-        startDate={selectedStartDate}
-        endDate={selectedEndDate}
-        dateFormat="dd/MM/yyyy"
-      />
-      <DatePicker
-        selected={selectedEndDate}
-        onChange={(date) => setSelectedEndDate(date)}
-        selectsEnd
-        startDate={selectedStartDate}
-        endDate={selectedEndDate}
-        dateFormat="dd/MM/yyyy"
-      />
+      <div className="PlotlyGrid">
+        <Plot
+          key={plotKey} // key único aqui
+          data={plotData}
+          layout={{ title: 'Valores ao longo do tempo' }}
+          config={{ responsive: true }}
+        />
+      </div>
     </div>
   );
 }
