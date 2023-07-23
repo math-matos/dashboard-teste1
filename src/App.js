@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Plot from 'react-plotly.js';
 import './App.css';
+import logo from './logo.png';
 
 function App() {
   const [selectedMonth, setSelectedMonth] = useState(1);
@@ -50,7 +51,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Dashboard com Gráfico e Filtros</h1>
+        <img src={logo} alt="Logo prodigiocode" className="logo" />
+      <h1>Dashboard - Gráfico e Filtros</h1>
 
       <div className="filters-container">
         <div className="filter">
